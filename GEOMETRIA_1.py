@@ -21,4 +21,4 @@ while True:
                 print("Esta opcion no esta en el menu.. Por favor digita una opcion valida")
                 break
     except ValueError:
-        print("No se puede usar letras digita numero por favor")
+        print("No se puede usar letras digita numero por favor\n")
