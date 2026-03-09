@@ -1,24 +1,33 @@
+def hacer_circulo():
+    print("Haciendo Circulo")
+def hacer_triangulo():
+    print("Haciendo Triangulo")
+def hacer_rectangulo():
+    print("Haciendo Rectangulo")
+def hacer_cuadrado():
+    print("Haciendo Cuadrado")
+def menu():
+    print("\nBienvenido a el programa de figuras geometricas\n ")
+    print("Selecciona una de las siguientes opciones:\n 1. Circulo\n 2. Triangulo\n 3. Rectagulo\n 4. Cuadrado\n 0. Salir\n")
 
 while True:    
+    menu()
     try:
-        print("\nBienvenido a el programa de figuras geometricas\n ")
-        opcion = int(input("Selecciona una de las siguientes opciones:\n 1. Circulo\n 2. Triangulo\n 3. Rectagulo\n 4. Rombo\n 5. Cuadrado\n 0. Salir \n"))
+        opcion = int(input("Digita una de las opciones del menu:\n"))
         match opcion:
             case 0:
-                print("Gracias por usar mi programa adios")
+                print("Saliendo...")
                 break
             case 1:
-                print("Has elegido el circulo:\n")
+                hacer_circulo()
             case 2:
-                print("Has elegido el triangulo:\n")
+                hacer_triangulo()
             case 3:
-                print("Has elegido el rectangulo:\n")
+                hacer_rectangulo()
             case 4:
-                print("Has elegido el rombo:\n")
-            case 5:
-                print("Has elegido el cuadrado:\n")
+                hacer_cuadrado()
             case _:
                 print("Esta opcion no esta en el menu.. Por favor digita una opcion valida")
-                break
+                continue
     except ValueError:
-        print("No se puede usar letras digita numero por favor\n")
+        print("Entrada Invalida.\n")
