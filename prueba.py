@@ -2,18 +2,17 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 import numpy as np
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from matplotlib.patches import Patch
 
 def hacer_circulo():
 
-    def solicitar_radio(radio):
-        area = np.pi * radio**2 
-        label = f"Area = {area:.3f}"
-  
+    def pedir_datos(radio):
+        area = np.pi * radio**2
         perimetro = 2 * np.pi * radio
         return radio, area, perimetro
 
     radio = float(input("\n--- Datos del Círculo ---\n  Ingresa el radio del círculo: "))
-    r, area, perimetro = solicitar_radio(radio)
+    r, area, perimetro = pedir_datos(radio)
 
     print("Haciendo circulo en 3D:")
     print(f"\nÁrea: {area:.4f}  |  Perímetro: {perimetro:.4f}")
@@ -23,29 +22,34 @@ def hacer_circulo():
 
     phi = np.linspace(0, np.pi, 50)
     theta = np.linspace(0, 2*np.pi, 50)
-
     phi, theta = np.meshgrid(phi, theta)
 
     x = r * np.sin(phi) * np.cos(theta)
     y = r * np.sin(phi) * np.sin(theta)
     z = r * np.cos(phi)
 
-    ax.plot_surface(x, y, z, color='lightblue', edgecolor='black', linewidth=0.5, alpha=0.9)
+    ax.plot_surface(x, y, z, color='lightblue', edgecolor='black', linewidth=0.5, alpha=0.9,
+                   label=f'Círculo (r={r})')
 
     ax.set_box_aspect([1,1,1])
     ax.set_xlim([-r*1.2, r*1.2])
     ax.set_ylim([-r*1.2, r*1.2])
     ax.set_zlim([-r*1.2, r*1.2])
-
     ax.axis('on')
     plt.title(f"Circulo 3D - Radio: {r}\nÁrea: {area:.2f}  |  Perímetro: {perimetro:.2f}")
+
+    ax.legend(handles=[
+        Patch(facecolor='lightblue', edgecolor='black', label=f'Círculo (r = {r:.3f})'),
+        Patch(facecolor='white',     edgecolor='black', label=f'Área = {area:.3f}'),
+        Patch(facecolor='white',     edgecolor='black', label=f'Perímetro = {perimetro:.3f}'),
+    ], loc='center', fontsize=9, bbox_to_anchor=(0.5, 0.5))
 
     plt.show()
 
 
 def hacer_triangulo():
 
-    def solicitar_datos_triangulo(base, altura, lado_a, lado_b):
+    def pedir_datos(base, altura, lado_a, lado_b):
         area      = (base * altura) / 2
         perimetro = base + lado_a + lado_b
         return base, altura, area, perimetro
@@ -55,7 +59,7 @@ def hacer_triangulo():
     altura = float(input("  Ingresa la altura: "))
     lado_a = float(input("  Ingresa el lado a: "))
     lado_b = float(input("  Ingresa el lado b: "))
-    base, altura, area, perimetro = solicitar_datos_triangulo(base, altura, lado_a, lado_b)
+    base, altura, area, perimetro = pedir_datos(base, altura, lado_a, lado_b)
 
     print("Haciendo un triángulo:")
     print(f"\nÁrea: {area:.4f}  |  Perímetro: {perimetro:.4f}")
@@ -63,24 +67,34 @@ def hacer_triangulo():
     x = [0, base / 2, base, 0]
     y = [0, altura,   0,    0]
 
-    plt.figure()
-    plt.fill(x, y, color="blue", alpha=0.7)
-    plt.plot(x, y, color="darkblue", linewidth=2)
+    fig, ax = plt.subplots()
 
-    plt.text(base / 2, altura / 3,
-             f"Área = {area:.2f}\nPerímetro = {perimetro:.2f}",
-             ha='center', va='center', fontsize=11,
-             color='white', fontweight='bold',
-             bbox=dict(boxstyle='round,pad=0.3', facecolor='navy', alpha=0.6))
+    ax.fill(x, y, color="blue", alpha=0.7, label=f'Triángulo')
+    ax.plot(x, y, color="darkblue", linewidth=2)
 
-    plt.gca().set_aspect('equal')
-    plt.title(f"Triángulo con matplotlib\nÁrea: {area:.2f}  |  Perímetro: {perimetro:.2f}")
+    ax.text(base / 2, altura / 3,
+            f"Área = {area:.2f}\nPerímetro = {perimetro:.2f}",
+            ha='center', va='center', fontsize=11,
+            color='white', fontweight='bold',
+            bbox=dict(boxstyle='round,pad=0.3', facecolor='navy', alpha=0.6))
+
+    ax.legend(handles=[
+        Patch(facecolor='blue',  edgecolor='darkblue', label=f'Triángulo'),
+        Patch(facecolor='white', edgecolor='black',    label=f'Base = {base:.3f}'),
+        Patch(facecolor='white', edgecolor='black',    label=f'Altura = {altura:.3f}'),
+        Patch(facecolor='white', edgecolor='black',    label=f'Área = {area:.3f}'),
+        Patch(facecolor='white', edgecolor='black',    label=f'Perímetro = {perimetro:.3f}'),
+    ], loc='center', fontsize=9, bbox_to_anchor=(base / 2, altura / 3),
+       bbox_transform=ax.transData)
+
+    ax.set_aspect('equal')
+    ax.set_title(f"Triángulo con matplotlib\nÁrea: {area:.2f}  |  Perímetro: {perimetro:.2f}")
     plt.show()
 
 
 def hacer_rectangulo():
 
-    def solicitar_datos_rectangulo(largo, ancho, altura):
+    def pedir_datos(largo, ancho, altura):
         area      = 2 * (largo*ancho + largo*altura + ancho*altura)
         perimetro = 4 * (largo + ancho + altura)
         return largo, ancho, altura, area, perimetro
@@ -89,7 +103,7 @@ def hacer_rectangulo():
     largo  = float(input("  Ingresa el largo (X): "))
     ancho  = float(input("  Ingresa el ancho (Y): "))
     altura = float(input("  Ingresa la altura (Z): "))
-    x_len, y_len, z_len, area, perimetro = solicitar_datos_rectangulo(largo, ancho, altura)
+    x_len, y_len, z_len, area, perimetro = pedir_datos(largo, ancho, altura)
 
     print("Haciendo Rectangulo")
     print(f"\nÁrea Superficial: {area:.4f}  |  Suma de Aristas: {perimetro:.4f}")
@@ -131,6 +145,15 @@ def hacer_rectangulo():
               transform=ax.transAxes, fontsize=10, color='white',
               bbox=dict(boxstyle='round', facecolor='#1565c0', alpha=0.7))
 
+    ax.legend(handles=[
+        Patch(facecolor='#1565c0', edgecolor='#64b5f6', label=f'Largo = {x_len:.3f}'),
+        Patch(facecolor='#1976d2', edgecolor='#64b5f6', label=f'Ancho = {y_len:.3f}'),
+        Patch(facecolor='#2196f3', edgecolor='#64b5f6', label=f'Altura = {z_len:.3f}'),
+        Patch(facecolor='#1e88e5', edgecolor='#64b5f6', label=f'Área Sup. = {area:.3f}'),
+        Patch(facecolor='#1e4d7a', edgecolor='#64b5f6', label=f'Aristas = {perimetro:.3f}'),
+    ], loc='center', fontsize=9, bbox_to_anchor=(0.5, 0.5),
+       facecolor='#0d1117', labelcolor='white', edgecolor='#64b5f6')
+
     ax.set_title('Rectángulo 3D', color="#FFFFFF", fontsize=16, fontweight='bold')
     ax.view_init(elev=25, azim=45)
 
@@ -140,14 +163,14 @@ def hacer_rectangulo():
 
 def hacer_cuadrado():
 
-    def solicitar_datos_cuadrado(lado):
+    def pedir_datos(lado):
         area      = lado ** 2
         perimetro = 4 * lado
         return lado, area, perimetro
 
     print("\n--- Datos del Cuadrado ---")
     lado = float(input("  Ingresa el lado del cuadrado: "))
-    lado, area, perimetro = solicitar_datos_cuadrado(lado)
+    lado, area, perimetro = pedir_datos(lado)
 
     print("Haciendo Cuadrado")
     print(f"\nÁrea: {area:.4f}  |  Perímetro: {perimetro:.4f}")
@@ -155,24 +178,33 @@ def hacer_cuadrado():
     x = [0, lado, lado, 0, 0]
     y = [0, 0,    lado, lado, 0]
 
-    plt.figure()
-    plt.fill(x, y, color='blue', alpha=0.7)
-    plt.plot(x, y, color='darkblue', linewidth=2)
+    fig, ax = plt.subplots()
 
-    plt.text(lado / 2, lado / 2,
-             f"Área = {area:.2f}\nPerímetro = {perimetro:.2f}",
-             ha='center', va='center', fontsize=12,
-             color='white', fontweight='bold',
-             bbox=dict(boxstyle='round,pad=0.4', facecolor='navy', alpha=0.6))
+    ax.fill(x, y, color='blue', alpha=0.7, label='Cuadrado')
+    ax.plot(x, y, color='darkblue', linewidth=2)
 
-    plt.gca().set_aspect('equal')
-    plt.title(f"Cuadrado relleno con matplotlib\nÁrea: {area:.2f}  |  Perímetro: {perimetro:.2f}")
+    ax.text(lado / 2, lado / 2,
+            f"Área = {area:.2f}\nPerímetro = {perimetro:.2f}",
+            ha='center', va='center', fontsize=12,
+            color='white', fontweight='bold',
+            bbox=dict(boxstyle='round,pad=0.4', facecolor='navy', alpha=0.6))
+
+    ax.legend(handles=[
+        Patch(facecolor='blue',  edgecolor='darkblue', label=f'Cuadrado'),
+        Patch(facecolor='white', edgecolor='black',    label=f'Lado = {lado:.3f}'),
+        Patch(facecolor='white', edgecolor='black',    label=f'Área = {area:.3f}'),
+        Patch(facecolor='white', edgecolor='black',    label=f'Perímetro = {perimetro:.3f}'),
+    ], loc='center', fontsize=9, bbox_to_anchor=(lado / 2, lado / 2),
+       bbox_transform=ax.transData)
+
+    ax.set_aspect('equal')
+    ax.set_title(f"Cuadrado relleno con matplotlib\nÁrea: {area:.2f}  |  Perímetro: {perimetro:.2f}")
     plt.show()
 
 
 def hacer_rombo():
 
-    def solicitar_datos_rombo(diagonal_mayor, diagonal_menor, altura):
+    def pedir_datos(diagonal_mayor, diagonal_menor, altura):
         a = diagonal_mayor / 2
         b = diagonal_menor / 2
         area      = (diagonal_mayor * diagonal_menor) / 2
@@ -183,7 +215,7 @@ def hacer_rombo():
     diagonal_mayor = float(input("  Ingresa la diagonal mayor (d1): "))
     diagonal_menor = float(input("  Ingresa la diagonal menor (d2): "))
     altura         = float(input("  Ingresa la altura de la bipirámide (h): "))
-    a, b, h, area, perimetro = solicitar_datos_rombo(diagonal_mayor, diagonal_menor, altura)
+    a, b, h, area, perimetro = pedir_datos(diagonal_mayor, diagonal_menor, altura)
 
     print(f"\nÁrea: {area:.4f}  |  Perímetro: {perimetro:.4f}")
 
@@ -237,6 +269,15 @@ def hacer_rombo():
               f"Área = {area:.2f}\nPerímetro = {perimetro:.2f}",
               transform=ax.transAxes, fontsize=10, color='white',
               bbox=dict(boxstyle='round', facecolor='#6a1b9a', alpha=0.7))
+
+    ax.legend(handles=[
+        Patch(facecolor='#8e24aa', edgecolor='#e040fb', label=f'Diagonal mayor = {diagonal_mayor:.3f}'),
+        Patch(facecolor='#ab47bc', edgecolor='#e040fb', label=f'Diagonal menor = {diagonal_menor:.3f}'),
+        Patch(facecolor='#ba68c8', edgecolor='#e040fb', label=f'Altura = {h:.3f}'),
+        Patch(facecolor='#ce93d8', edgecolor='#e040fb', label=f'Área = {area:.3f}'),
+        Patch(facecolor='#e1bee7', edgecolor='#e040fb', label=f'Perímetro = {perimetro:.3f}'),
+    ], loc='center', fontsize=8, bbox_to_anchor=(0.5, 0.5),
+       facecolor='#0d1117', labelcolor='white', edgecolor='#e040fb')
 
     ax.set_title('Rombo 3D', color='#f3e5f5', fontsize=16, fontweight='bold')
     ax.view_init(elev=20, azim=45)
