@@ -4,15 +4,15 @@ import numpy as np
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from matplotlib.patches import Patch
 
-def hacer_circulo():
-
-    def pedir_datos(radio):
+def radio_2(radio):
         area = np.pi * radio**2
         perimetro = 2 * np.pi * radio
         return radio, area, perimetro
 
+def hacer_circulo():
+
     radio = float(input("\n--- Datos del Círculo ---\n  Ingresa el radio del círculo: "))
-    r, area, perimetro = pedir_datos(radio)
+    r, area, perimetro = radio_2(radio)
 
     print("Haciendo circulo en 3D:")
     print(f"\nÁrea: {area:.4f}  |  Perímetro: {perimetro:.4f}")
