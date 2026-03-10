@@ -4,15 +4,38 @@ import numpy as np
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from matplotlib.patches import Patch
 
-def radio_2(radio):
+def circulo(radio):
         area = np.pi * radio**2
         perimetro = 2 * np.pi * radio
         return radio, area, perimetro
 
+def triangulo(base, altura, lado_a, lado_b):
+        area      = (base * altura) / 2
+        perimetro = base + lado_a + lado_b
+        return base, altura, area, perimetro
+
+def rectangulo(largo, ancho, altura):
+        area      = 2 * (largo*ancho + largo*altura + ancho*altura)
+        perimetro = 4 * (largo + ancho + altura)
+        return largo, ancho, altura, area, perimetro
+
+def cuadrado(lado):
+        area      = lado ** 2
+        perimetro = 4 * lado
+        return lado, area, perimetro
+
+def rombo(diagonal_mayor, diagonal_menor, altura):
+        a = diagonal_mayor / 2
+        b = diagonal_menor / 2
+        area      = (diagonal_mayor * diagonal_menor) / 2
+        perimetro = 4 * np.sqrt(a**2 + b**2)
+        return a, b, altura, area, perimetro
+
+
 def hacer_circulo():
 
     radio = float(input("\n--- Datos del Círculo ---\n  Ingresa el radio del círculo: "))
-    r, area, perimetro = radio_2(radio)
+    r, area, perimetro = circulo(radio)
 
     print("Haciendo circulo en 3D:")
     print(f"\nÁrea: {area:.4f}  |  Perímetro: {perimetro:.4f}")
@@ -47,19 +70,15 @@ def hacer_circulo():
     plt.show()
 
 
-def hacer_triangulo():
 
-    def pedir_datos(base, altura, lado_a, lado_b):
-        area      = (base * altura) / 2
-        perimetro = base + lado_a + lado_b
-        return base, altura, area, perimetro
+def hacer_triangulo():
 
     print("\n--- Datos del Triángulo ---")
     base   = float(input("  Ingresa la base: "))
     altura = float(input("  Ingresa la altura: "))
     lado_a = float(input("  Ingresa el lado a: "))
     lado_b = float(input("  Ingresa el lado b: "))
-    base, altura, area, perimetro = pedir_datos(base, altura, lado_a, lado_b)
+    base, altura, area, perimetro = triangulo(base, altura, lado_a, lado_b)
 
     print("Haciendo un triángulo:")
     print(f"\nÁrea: {area:.4f}  |  Perímetro: {perimetro:.4f}")
@@ -94,16 +113,12 @@ def hacer_triangulo():
 
 def hacer_rectangulo():
 
-    def pedir_datos(largo, ancho, altura):
-        area      = 2 * (largo*ancho + largo*altura + ancho*altura)
-        perimetro = 4 * (largo + ancho + altura)
-        return largo, ancho, altura, area, perimetro
 
     print("\n--- Datos del Rectángulo ---")
     largo  = float(input("  Ingresa el largo (X): "))
     ancho  = float(input("  Ingresa el ancho (Y): "))
     altura = float(input("  Ingresa la altura (Z): "))
-    x_len, y_len, z_len, area, perimetro = pedir_datos(largo, ancho, altura)
+    x_len, y_len, z_len, area, perimetro = rectangulo(largo, ancho, altura)
 
     print("Haciendo Rectangulo")
     print(f"\nÁrea Superficial: {area:.4f}  |  Suma de Aristas: {perimetro:.4f}")
@@ -163,14 +178,10 @@ def hacer_rectangulo():
 
 def hacer_cuadrado():
 
-    def pedir_datos(lado):
-        area      = lado ** 2
-        perimetro = 4 * lado
-        return lado, area, perimetro
 
     print("\n--- Datos del Cuadrado ---")
     lado = float(input("  Ingresa el lado del cuadrado: "))
-    lado, area, perimetro = pedir_datos(lado)
+    lado, area, perimetro = cuadrado(lado)
 
     print("Haciendo Cuadrado")
     print(f"\nÁrea: {area:.4f}  |  Perímetro: {perimetro:.4f}")
@@ -204,18 +215,11 @@ def hacer_cuadrado():
 
 def hacer_rombo():
 
-    def pedir_datos(diagonal_mayor, diagonal_menor, altura):
-        a = diagonal_mayor / 2
-        b = diagonal_menor / 2
-        area      = (diagonal_mayor * diagonal_menor) / 2
-        perimetro = 4 * np.sqrt(a**2 + b**2)
-        return a, b, altura, area, perimetro
-
     print("\n--- Datos del Rombo ---")
     diagonal_mayor = float(input("  Ingresa la diagonal mayor (d1): "))
     diagonal_menor = float(input("  Ingresa la diagonal menor (d2): "))
     altura         = float(input("  Ingresa la altura de la bipirámide (h): "))
-    a, b, h, area, perimetro = pedir_datos(diagonal_mayor, diagonal_menor, altura)
+    a, b, h, area, perimetro = rombo(diagonal_mayor, diagonal_menor, altura)
 
     print(f"\nÁrea: {area:.4f}  |  Perímetro: {perimetro:.4f}")
 
